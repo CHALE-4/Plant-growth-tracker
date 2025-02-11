@@ -29,14 +29,18 @@
     <script>
        async function loadPlants() {
     try {
-        const response = await fetch("plants.json");
+        const response = await fetch("./plants.json");
         if (!response.ok) throw new Error("Failed to load plants.json");
 
         const plants = await response.json();
-        const table = document.getElementById("plantTable");
+        console.log("Loaded plants:", plants);  // Debugging log
 
+        const table = document.getElementById("plantTable");
         table.innerHTML = "";
+
         plants.forEach(plant => {
+            console.log(`Processing plant ${plant.id}`, plant);  // Debugging log
+
             const imageUrl = plant.stages[plant.current_stage].startsWith("http") 
                 ? plant.stages[plant.current_stage] 
                 : `https://raw.githubusercontent.com/CHALE-4/Plant-growth-tracker/main/${plant.stages[plant.current_stage]}`;
