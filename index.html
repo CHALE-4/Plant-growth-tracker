@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Growth Admin Panel</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        table { width: 80%; margin: auto; border-collapse: collapse; }
+        th, td { padding: 10px; border: 1px solid black; }
+        img { width: 100px; height: 100px; }
+        button { margin: 5px; padding: 5px 10px; }
+    </style>
+</head>
+<body>
+    <h1>Plant Growth Tracker</h1>
+    <table>
+        <tr>
+            <th>Plant</th>
+            <th>Owner</th>
+            <th>Profile</th>
+            <th>Actions</th>
+        </tr>
+        <tbody id="plantTable">
+            <!-- Plants will be loaded here dynamically -->
+        </tbody>
+    </table>
+
+    <script>
+        async function loadPlants() {
+            const response = await fetch("plants.json");
+            const plants = await response.json();
+            const table = document.getElementById("plantTable");
+
+            table.innerHTML = "";
+            plants.forEach(plant => {
+                table.innerHTML += `
+                    <tr>
+                        <td><img src="${plant.image}" alt="Plant"></td>
+                        <td>${plant.owner}</td>
+                        <td><a href="${plant.profile}" target="_blank">Profile</a></td>
+                        <td>
+                            <button onclick="pausePlant('${plant.id}')">Pause</button>
+                            <button onclick="overridePlant('${plant.id}')">Override</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function pausePlant(id) {
+            alert(`Pausing growth for Plant ID: ${id}`);
+        }
+
+        function overridePlant(id) {
+            alert(`Overriding Plant ID: ${id}`);
+        }
+
+        loadPlants();
+    </script>
+</body>
+</html>
