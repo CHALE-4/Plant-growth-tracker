@@ -15,7 +15,7 @@
 <body>
     <h1>Plant Growth Tracker</h1>
     <table>
-        <tr>
+        <tr> 
             <th>Plant</th>
             <th>Owner</th>
             <th>Profile</th>
@@ -27,40 +27,36 @@
     </table>
 
     <script>
-       async function loadPlants() {
-    try {
-        const response = await fetch("./plants.json");
-        if (!response.ok) throw new Error("Failed to load plants.json");
+        async function loadPlants() {
+            try {
+                const response = await fetch("./plants.json");
+                if (!response.ok) throw new Error("Failed to load plants.json");
 
-        const plants = await response.json();
-        console.log("Loaded plants:", plants);  // Debugging log
+                const plants = await response.json();
+                const table = document.getElementById("plantTable");
 
-        const table = document.getElementById("plantTable");
-        table.innerHTML = "";
+                table.innerHTML = "";
+                plants.forEach(plant => {
+                    // Ensure plant has valid stage data
+                    if (!plant.stages || plant.current_stage >= plant.stages.length) {
+                        console.error(`Invalid stages for plant ${plant.id}`, plant);
+                        return;
+                    }
 
-        plants.forEach(plant => {
-            console.log(`Processing plant ${plant.id}`, plant);  // Debugging log
+                    // Get current stage image
+                    const imageUrl = plant.stages[plant.current_stage];
 
-            const imageUrl = plant.stages[plant.current_stage].startsWith("http") 
-                ? plant.stages[plant.current_stage] 
-                : `https://raw.githubusercontent.com/CHALE-4/Plant-growth-tracker/main/${plant.stages[plant.current_stage]}`;
-
-            table.innerHTML += `
-                <tr>
-                    <td><img src="${imageUrl}" alt="Plant"></td>
-                    <td>${plant.owner}</td>
-                    <td><a href="${plant.profile}" target="_blank">Profile</a></td>
-                    <td>
-                        <button onclick="pausePlant('${plant.id}')">Pause</button>
-                        <button onclick="overridePlant('${plant.id}')">Override</button>
-                    </td>
-                </tr>
-            `;
-        });
-    } catch (error) {
-        console.error("Error loading plants:", error);
-        document.getElementById("plantTable").innerHTML = `
-            <tr><td colspan="4">⚠️ Failed to load plant data.</td></tr>
-        `;
-    }
-}
+                    table.innerHTML += `
+                        <tr>
+                            <td><img src="${imageUrl}" alt="Plant"></td>
+                            <td>${plant.owner}</td>
+                            <td><a href="${plant.profile}" target="_blank">Profile</a></td>
+                            <td>
+                                <button onclick="pausePlant('${plant.id}')">Pause</button>
+                                <button onclick="overridePlant('${plant.id}')">Override</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console
