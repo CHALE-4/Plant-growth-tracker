@@ -1,8 +1,8 @@
 [
     {
         "id": "plant1",
-        "owner": "User123",
-        "profile": "https://stardewvalleywiki.com/mediawiki/images/2/21/Sunflower_Stage_1.png",
+        "owner": "CHALE4",
+        "profile": "https://www.chickensmoothie.com/Forum/memberlist.php?mode=viewprofile&u=823146",
         "stages": [
             "https://stardewvalleywiki.com/mediawiki/images/0/08/Sunflower_Stage_2.png",
             "https://stardewvalleywiki.com/mediawiki/images/4/49/Sunflower_Stage_3.png",
@@ -13,7 +13,7 @@
     {
         "id": "plant2",
         "owner": "User456",
-        "profile": "https://www.chickensmoothie.com/Forum/memberlist.php?mode=viewprofile&u=456",
+        "profile": "https://www.chickensmoothie.com/Forum/memberlist.php?mode=viewprofile&u=823146",
         "stages": [
             "https://raw.githubusercontent.com/yourusername/plant-growth-tracker/main/images/plant2_stage1.png",
             "https://raw.githubusercontent.com/yourusername/plant-growth-tracker/main/images/plant2_stage2.png",
