@@ -28,24 +28,37 @@
 
     <script>
         async function loadPlants() {
-            const response = await fetch("plants.json");
-            const plants = await response.json();
-            const table = document.getElementById("plantTable");
+            try {
+                const response = await fetch("plants.json");
+                if (!response.ok) throw new Error("Failed to load plants.json");
 
-            table.innerHTML = "";
-            plants.forEach(plant => {
-                table.innerHTML += `
-                    <tr>
-                        <td><img src="${plant.image}" alt="Plant"></td>
-                        <td>${plant.owner}</td>
-                        <td><a href="${plant.profile}" target="_blank">Profile</a></td>
-                        <td>
-                            <button onclick="pausePlant('${plant.id}')">Pause</button>
-                            <button onclick="overridePlant('${plant.id}')">Override</button>
-                        </td>
-                    </tr>
+                const plants = await response.json();
+                const table = document.getElementById("plantTable");
+
+                table.innerHTML = "";
+                plants.forEach(plant => {
+                    const imageUrl = plant.image.startsWith("http") 
+                        ? plant.image 
+                        : `https://raw.githubusercontent.com/CHALE-4/Plant-growth-tracker/main/${plant.image}`;
+
+                    table.innerHTML += `
+                        <tr>
+                            <td><img src="${imageUrl}" alt="Plant"></td>
+                            <td>${plant.owner}</td>
+                            <td><a href="${plant.profile}" target="_blank">Profile</a></td>
+                            <td>
+                                <button onclick="pausePlant('${plant.id}')">Pause</button>
+                                <button onclick="overridePlant('${plant.id}')">Override</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error loading plants:", error);
+                document.getElementById("plantTable").innerHTML = `
+                    <tr><td colspan="4">⚠️ Failed to load plant data.</td></tr>
                 `;
-            });
+            }
         }
 
         function pausePlant(id) {
