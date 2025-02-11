@@ -1,0 +1,24 @@
+name: Grow Plants
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # Runs every day at midnight UTC
+  workflow_dispatch:  # Allows manual runs from GitHub Actions
+
+jobs:
+  update-plants:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run plant growth script
+        run: python scripts/grow_plants.py  # Make sure you have this script in /scripts/
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add data/plants.json
+          git commit -m "Update plant growth" || echo "No changes to commit"
+          git push
