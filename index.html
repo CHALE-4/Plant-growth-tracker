@@ -27,49 +27,36 @@
     </table>
 
     <script>
-        async function loadPlants() {
-            try {
-                const response = await fetch("plants.json");
-                if (!response.ok) throw new Error("Failed to load plants.json");
+       async function loadPlants() {
+    try {
+        const response = await fetch("plants.json");
+        if (!response.ok) throw new Error("Failed to load plants.json");
 
-                const plants = await response.json();
-                const table = document.getElementById("plantTable");
+        const plants = await response.json();
+        const table = document.getElementById("plantTable");
 
-                table.innerHTML = "";
-                plants.forEach(plant => {
-                    const imageUrl = plant.image.startsWith("http") 
-                        ? plant.image 
-                        : `https://raw.githubusercontent.com/CHALE-4/Plant-growth-tracker/main/${plant.image}`;
+        table.innerHTML = "";
+        plants.forEach(plant => {
+            const imageUrl = plant.stages[plant.current_stage].startsWith("http") 
+                ? plant.stages[plant.current_stage] 
+                : `https://raw.githubusercontent.com/CHALE-4/Plant-growth-tracker/main/${plant.stages[plant.current_stage]}`;
 
-                    table.innerHTML += `
-                        <tr>
-                            <td><img src="${imageUrl}" alt="Plant"></td>
-                            <td>${plant.owner}</td>
-                            <td><a href="${plant.profile}" target="_blank">Profile</a></td>
-                            <td>
-                                <button onclick="pausePlant('${plant.id}')">Pause</button>
-                                <button onclick="overridePlant('${plant.id}')">Override</button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            } catch (error) {
-                console.error("Error loading plants:", error);
-                document.getElementById("plantTable").innerHTML = `
-                    <tr><td colspan="4">⚠️ Failed to load plant data.</td></tr>
-                `;
-            }
-        }
-
-        function pausePlant(id) {
-            alert(`Pausing growth for Plant ID: ${id}`);
-        }
-
-        function overridePlant(id) {
-            alert(`Overriding Plant ID: ${id}`);
-        }
-
-        loadPlants();
-    </script>
-</body>
-</html>
+            table.innerHTML += `
+                <tr>
+                    <td><img src="${imageUrl}" alt="Plant"></td>
+                    <td>${plant.owner}</td>
+                    <td><a href="${plant.profile}" target="_blank">Profile</a></td>
+                    <td>
+                        <button onclick="pausePlant('${plant.id}')">Pause</button>
+                        <button onclick="overridePlant('${plant.id}')">Override</button>
+                    </td>
+                </tr>
+            `;
+        });
+    } catch (error) {
+        console.error("Error loading plants:", error);
+        document.getElementById("plantTable").innerHTML = `
+            <tr><td colspan="4">⚠️ Failed to load plant data.</td></tr>
+        `;
+    }
+}
